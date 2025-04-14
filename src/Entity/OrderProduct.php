@@ -58,7 +58,7 @@ class OrderProduct
         return $this->order;
     }
 
-    public function setCommand(?Order $order): static
+    public function setOrder(?Order $order): static
     {
         $this->order = $order;
 

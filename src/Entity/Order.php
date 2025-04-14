@@ -32,6 +32,10 @@ class Order
     #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'order', orphanRemoval: true)]
     private Collection $orderProducts;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Client $client = null;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -90,7 +94,7 @@ class Order
     {
         if (!$this->orderProducts->contains($orderProduct)) {
             $this->orderProducts->add($orderProduct);
-            $orderProduct->setCommand($this);
+            $orderProduct->setOrder($this);
         }
 
         return $this;
@@ -100,10 +104,22 @@ class Order
     {
         if ($this->orderProducts->removeElement($orderProduct)) {
             // set the owning side to null (unless already changed)
-            if ($orderProduct->getCommand() === $this) {
-                $orderProduct->setCommand(null);
+            if ($orderProduct->getOrder() === $this) {
+                $orderProduct->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
 
         return $this;
     }

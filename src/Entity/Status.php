@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\StatusRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\StatusRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
 class Status
@@ -32,15 +33,17 @@ class Status
     private Collection $payments;
 
     /**
-     * @var Collection<int, Order>
+     * @var Collection<int, Ordre>
      */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'status')]
-    private Collection $orders;
+    #[ORM\OneToMany(targetEntity: Ordre::class, mappedBy: 'status')]
+    private Collection $ordres;
+
+
 
     public function __construct()
     {
         $this->payments = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->ordres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,29 +118,29 @@ class Status
     }
 
     /**
-     * @return Collection<int, Order>
+     * @return Collection<int, Ordre>
      */
-    public function getOrders(): Collection
+    public function getOrdres(): Collection
     {
-        return $this->orders;
+        return $this->ordres;
     }
 
-    public function addOrder(Order $order): static
+    public function addOrdre(Ordre $ordre): static
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setStatus($this);
+        if (!$this->ordres->contains($ordre)) {
+            $this->ordres->add($ordre);
+            $ordre->setStatus($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): static
+    public function removeOrdre(Ordre $ordre): static
     {
-        if ($this->orders->removeElement($order)) {
+        if ($this->ordres->removeElement($ordre)) {
             // set the owning side to null (unless already changed)
-            if ($order->getStatus() === $this) {
-                $order->setStatus(null);
+            if ($ordre->getStatus() === $this) {
+                $ordre->setStatus(null);
             }
         }
 
