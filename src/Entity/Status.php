@@ -38,6 +38,9 @@ class Status
     #[ORM\OneToMany(targetEntity: Ordre::class, mappedBy: 'status')]
     private Collection $ordres;
 
+    #[ORM\Column(length: 15, nullable: false)]
+    private ?string $type = null;
+
 
 
     public function __construct()
@@ -143,6 +146,18 @@ class Status
                 $ordre->setStatus(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

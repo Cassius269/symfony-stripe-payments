@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,9 +19,6 @@ class Product
 
     #[ORM\Column(length: 50)]
     private ?string $name = null;
-
-    #[ORM\Column]
-    private ?int $price = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $stripeId = null;
@@ -39,6 +37,9 @@ class Product
      */
     #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'product')]
     private Collection $orders;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 9, scale: 2)]
+    private ?string $price = null;
 
     public function __construct()
     {
@@ -62,17 +63,6 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?int
-    {
-        return $this->price;
-    }
-
-    public function setPrice(int $price): static
-    {
-        $this->price = $price;
-
-        return $this;
-    }
 
     public function getStripeId(): ?string
     {
@@ -148,6 +138,18 @@ class Product
                 $order->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(string $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }

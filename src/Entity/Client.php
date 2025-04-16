@@ -16,6 +16,9 @@ class Client extends User
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'client', orphanRemoval: true)]
     private Collection $orders;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $stripeId = null;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -47,6 +50,18 @@ class Client extends User
                 $order->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStripeId(): ?string
+    {
+        return $this->stripeId;
+    }
+
+    public function setStripeId(?string $stripeId): static
+    {
+        $this->stripeId = $stripeId;
 
         return $this;
     }

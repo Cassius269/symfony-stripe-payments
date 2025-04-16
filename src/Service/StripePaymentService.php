@@ -8,8 +8,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class StripePaymentService
 {
-    const STRIPESCRETKEY = '';
-
     // Injection de dépendance(s)
     public function __construct(
         private ParameterBagInterface $parameterBag, // dépendance de gestion des paramètres de configurations
@@ -65,4 +63,18 @@ class StripePaymentService
             throw new \Exception($error_message);
         }
     }
+
+    // // Méthode pour recupérer les cartes d'un utilisateur
+    // public function getCards(): \Stripe\Collection
+    // {
+    //     $apiKey = $this->parameterBag->get('API_PRIVATE_KEY_STRIPE');
+    //     $stripe = new StripeClient($apiKey);
+
+    //     $cards = $stripe->paymentMethods->all([
+    //         'customer' => $this->stripe_id,
+    //         'type' => 'card'
+    //     ]);
+
+    //     return $cards;
+    // }
 }
