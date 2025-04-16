@@ -4,14 +4,11 @@ framework:
 
   # Note that the session will be started ONLY if you read or write from it.
   session:
-    handler_id: session.handler.native_file
-    save_path: "%kernel.project_dir%/var/sessions"
-    cookie_secure: auto
-    cookie_samesite: lax
-    cookie_httponly: true
-    cookie_lifetime: 604800
-    gc_maxlifetime: 604800
-    storage_factory_id: session.storage.factory.native
+    handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
+services: # déclaration du service de Redis au sein de la configuration de la session pour Redis
+  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+    arguments: ["@snc_redis.session"]
+
   #esi: true
   #fragments: true
 
