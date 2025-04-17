@@ -5,6 +5,19 @@
 
 {% block body %}
 	<h1>Nous sommes dans la page d'accueil</h1>
-	<p>Cart ID:
-		{{cartId}}</p>
+	<section>
+		<p>Cart ID:
+			{{cartId}}</p>
+	</section>
+	<section>
+		<h2>Les produits</h2>
+		<ul>
+			{% for product in products %}
+				<li>{{product.name}}</li>
+			{% endfor %}
+		</ul>
+		
+
+	</section>
+
 {% endblock %}

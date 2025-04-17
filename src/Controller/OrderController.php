@@ -4,34 +4,36 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Form\OrderType;
+use App\Service\StripeService;
+use App\Service\SessionService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 final class OrderController extends AbstractController
 {
+    // Injection de dépendance(s)
+    public function __construct(
+        private readonly SessionService $sessionService,
+        private readonly StripeService $stripeService
+    ) {}
+
+
     #[Route(
-        path: '/order',
-        name: 'order',
-        methods: ['GET', 'POST']
+        path: '/products/{id}/buy',
+        name: 'buy_product'
     )]
-    public function index(Request $request): Response
+    public function buyProduct(string $id): Response
     {
-        // Créer une nouvelle instance de l'objet Commande
-        $order = new Order;
+        $cartId = $this->sessionService->getCartId();
+        $products = $this->stripeService->getActiveProducts();
 
-        // Créer le formulaire
-        $form = $this->createForm(OrderType::class, $order);
-
-        $form->handleRequest($request); // Récuillir les données de la requête
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData());
-        }
-
-        return $this->render('order/index.html.twig', [
-            'form' => $form->createView()
+        $product = $this->stripeService->findOneProduct('prod_S8AxS93UT3TBCH');
+        dd($product);
+        return $this->render('home/index.html.twig', [
+            'cartId' => $cartId,
+            'products' => $products
         ]);
     }
 }
