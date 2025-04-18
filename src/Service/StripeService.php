@@ -4,8 +4,6 @@ namespace App\Service;
 
 use Stripe\Product;
 use Stripe\StripeClient;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class StripeService
@@ -33,8 +31,33 @@ class StripeService
             ->data;
     }
 
+    // Action pour récupérer les produits actifs avec leur prix
+    /**
+     * @return Product[]
+     * @throws ApiErrorException
+     */
+    public function getActiveProductsWithPrices(): array
+    {
+        // Récuperer les produits
+        $activeProducts = self::getActiveProducts();
 
-    // Action pour récuperérer un seul produit depuis Stripe
+        // Associer chaque objet produit actif avec son objet prix
+        $productsWithPrices = [];
+
+        foreach ($activeProducts as $activeProduct) {
+            $price = $this->client->prices->retrieve($activeProduct->default_price);
+
+            $productsWithPrices[] = [
+                'product' => $activeProduct,
+                'price' => $price
+            ];
+        }
+
+        return $productsWithPrices;
+    }
+
+
+    // Action pour récuperérer un seul produit depuis Stripe à l'aide de l'ID du produit
     public function findOneProduct(string $productId): Product
     {
         return $this->client->products->retrieve($productId);

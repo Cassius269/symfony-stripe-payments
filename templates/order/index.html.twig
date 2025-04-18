@@ -1,19 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!
+{% block title %}Panier
 {% endblock %}
 
 {% block body %}
-	<h1>Page de commande</h1>
+	<h1>Panier</h1>
 	<section>
-		{{ form_start(form) }}
-		<div
-			id="card-element"><!-- Stripe Elements will be inserted here -->
-		</div>
-		<div id="card-errors" role="alert"></div>
-
-		<button type="submit">Commander</button>
-		{{ form_end(form) }}
-
-	</section>
-{% endblock %}
+		<h2>Détail du produit</h2>
+		<table>
+			<caption>Les produits disponibles</caption>
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Image</th>
+					<th>Prix</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{product.name}}</td>
+					<td>
+						<img src="{{product.images[0]}}" alt="{{product.description}}" width="50px">
+					</td>
+					{# <td>{{(price.unit_amount / 100)|number_format(2, ',', ' ') }} #}
+					{# {{ price.currency|upper }}</tr> #}
+				</tr>
+			</tbody>
+		</td>
+		<td>
+			<button>Confirmer la commande</button>
+		</td>
+	</tr>
+</tbody>
+<tfoot></tfoot></table></section>{% endblock %}

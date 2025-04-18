@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue des produits
+{% endblock %}
+
+{% block body %}
+	<h1>Catalogue des produits</h1>
+	<section>
+		<h2>Les produits</h2>
+		<pre>
+</pre>
+		<table>
+			<caption>Les produits disponibles</caption>
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Image</th>
+					<th>Prix</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in products %}
+					<tr>
+						<td>{{item.product.name}}</td>
+						<td>
+							<img src="{{item.product.images[0]}}" alt="{{item.product.description}}" width="50px">
+						</td>
+						<td>{{(item.price.unit_amount / 100)|number_format(2, ',', ' ') }}
+							{{ item.price.currency|upper }}</td>
+						<td>
+							<a href="{{path("buy_product", {id: item.product.id })}}" title="acheter le produit">
+								<button>Acheter</button>
+							</a>
+						</td>
+					</tr>
+
+				{% endfor %}
+			</tbody>
+			<tfoot></tfoot>
+		</table>
+	</section>
+{% endblock %}

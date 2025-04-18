@@ -26,14 +26,13 @@ final class OrderController extends AbstractController
     )]
     public function buyProduct(string $id): Response
     {
-        $cartId = $this->sessionService->getCartId();
-        $products = $this->stripeService->getActiveProducts();
+        // $cartId = $this->sessionService->getCartId();
+        // $products = $this->stripeService->getActiveProducts();
 
-        $product = $this->stripeService->findOneProduct('prod_S8AxS93UT3TBCH');
-        dd($product);
-        return $this->render('home/index.html.twig', [
-            'cartId' => $cartId,
-            'products' => $products
+        $product = $this->stripeService->findOneProduct($id);
+
+        return $this->render('order/index.html.twig', [
+            'product' => $product
         ]);
     }
 }
