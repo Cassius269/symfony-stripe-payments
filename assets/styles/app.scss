@@ -1,0 +1,7 @@
+@use './base/normalize'; // réinitilisation de tous les styles pour rendre l'application identique pour tous les vnavigateurs
+@use './utils/mixins' as mixins;
+@use './utils/variables' as variables;
+
+body {
+    background-color: variables.$secondaryColor;
+}
