@@ -1,0 +1,21 @@
+@use '../utils/variables' as variables; // importation des variables à l'aide de son espace de nom
+
+table {
+    margin: auto;
+    caption {
+        background-color: variables.$secondaryColor;
+        padding: 1rem;
+    }
+    // border-collapse: collapse;
+    thead{
+        tr {
+            border: variables.$secondaryColor solid 2px;
+        }
+    }
+    tbody {
+        td {
+            text-align: center;
+            border: variables.$secondaryColor solid 2px;
+        }
+    }
+}

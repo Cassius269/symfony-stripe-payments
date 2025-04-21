@@ -3,5 +3,5 @@
 @use './utils/variables' as variables;
 
 body {
-    background-color: variables.$secondaryColor;
+    background-color: variables.$primaryColor;
 }

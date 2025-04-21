@@ -1,0 +1,13 @@
+@use '../utils/variables' as variables;
+
+button {
+    &:hover {
+        background-color: variables.$secondaryColor;
+        color: variables.$primaryColor;
+    }
+    &:active {
+        background-color: variables.$primaryColor;
+        color: variables.$secondaryColor;
+        border: variables.$tertiaryColor solid 1px;
+    }
+}

@@ -2,13 +2,15 @@
 
 {% block title %}Catalogue des produits
 {% endblock %}
-
+{% block stylesheets %}
+	{{parent()}}
+	{{ encore_entry_link_tags('allProductsPage')}}
+{% endblock %}
 {% block body %}
 	<h1>Catalogue des produits</h1>
 	<section>
 		<h2>Les produits</h2>
-		<pre>
-</pre>
+
 		<table>
 			<caption>Les produits disponibles</caption>
 			<thead>

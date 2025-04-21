@@ -37,7 +37,7 @@ final class ProductController extends AbstractController
 
         // dd($productsWithPrices);
         // dd($products);
-        return $this->render('product/index.html.twig', [
+        return $this->render('product/all_products.html.twig', [
             'products' => $productsWithPrices
         ]);
     }
