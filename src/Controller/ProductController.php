@@ -24,19 +24,6 @@ final class ProductController extends AbstractController
 
         $productsWithPrices = $this->stripeService->getActiveProductsWithPrices();
 
-        // dd($productsWithPrices);
-        // $productsWithPrices = [];
-
-        // foreach ($products as $product) {
-        //     $price = new StripeClient('sk_test_51RDVGy2MIFYFfgML0cr6VYFYa5dchQS1kYmSRVBmrWTNvBykk0gmgX16JaOm6giwKjYOvNgirvYsAfRBp0SzF7Wi00AdasIqi3')->prices->retrieve($product->default_price);
-        //     $productsWithPrices[] = [
-        //         'product' => $product,
-        //         'price' => $price
-        //     ];
-        // }
-
-        // dd($productsWithPrices);
-        // dd($products);
         return $this->render('product/all_products.html.twig', [
             'products' => $productsWithPrices
         ]);

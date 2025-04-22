@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Order;
-use App\Form\OrderType;
 use App\Service\StripeService;
 use App\Service\SessionService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,13 +23,10 @@ final class OrderController extends AbstractController
     )]
     public function buyProduct(string $id): Response
     {
-        // $cartId = $this->sessionService->getCartId();
-        // $products = $this->stripeService->getActiveProducts();
-
+        // Rechercher le produit à l'aide de son Id Stripe
         $product = $this->stripeService->findOneProduct($id);
 
-        return $this->render('order/index.html.twig', [
-            'product' => $product
-        ]);
+        // Générer le lien de paiement du produit
+        return $this->redirect($this->stripeService->getProductByUrl($product));
     }
 }
