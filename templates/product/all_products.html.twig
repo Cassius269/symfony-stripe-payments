@@ -35,6 +35,11 @@
 								<button>Acheter</button>
 							</a>
 						</td>
+						<td>
+							<a href="{{path("add_products_to_cart", {id: item.product.id })}}" title="ajouter le produit au panier">
+								<button>Ajouter au panier</button>
+							</a>
+						</td>
 					</tr>
 
 				{% endfor %}

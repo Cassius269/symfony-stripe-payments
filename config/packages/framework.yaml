@@ -3,12 +3,7 @@ framework:
   secret: "%env(APP_SECRET)%"
 
   # Note that the session will be started ONLY if you read or write from it.
-  session:
-    handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
-services: # déclaration du service de Redis au sein de la configuration de la session pour Redis
-  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
-    arguments: ["@snc_redis.session"]
-
+  session: true
   #esi: true
   #fragments: true
 

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Stripe\Price;
 use Stripe\Product;
+use App\Entity\Cart;
 use Stripe\StripeClient;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -101,5 +102,42 @@ class StripeService
             'cancel_url' => 'https://127.0.1:8000' // lien de redirection en cas d'échec de paiement
         ])
             ->url;
+    }
+
+    // Réaliser le paiement d'un panier de produit(s) à l'aide d'un lien de paiement Stripe
+    public function getCartByUrl(Cart $cart): string
+    {
+
+        $lineItems = [];
+
+        foreach ($cart->products as $cartProduct) {
+            // Recherche du produit sur Stripe à l'aide de son ID Stripe stocké dans la session sur Redis
+            $product = $this->findOneProduct($cartProduct->id);
+
+            // Récupération du dernier prix actif de chaque produit se trouvant dans le panier
+            $price = $this->getLastActivePrice($product);
+
+            // La ligne de commande contenant la liste des produits se trouvant dans le panier
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => $product->name,
+                        'images' => $product->images
+                    ],
+                    'unit_amount' => $price->unit_amount
+                ],
+                'quantity' => $cartProduct->quantity // récupérer la donnée de quantité de chaque produit du panier
+            ];
+        }
+
+        // Retourner le lien de paiement au client 
+        return $this->client->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => 'https://127.0.1:8000', // lien en cas de succès de paiement
+            'cancel_url' => 'https://127.0.1:8000' // lien de redirection en cas d'échec de paiement
+        ])->url;
     }
 }

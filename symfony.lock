@@ -40,15 +40,6 @@
             "tests/bootstrap.php"
         ]
     },
-    "snc/redis-bundle": {
-        "version": "4.9",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "2.0",
-            "ref": "36b3d9ab65be62de4e085a25e6ca899efa96b1f3"
-        }
-    },
     "symfony/asset-mapper": {
         "version": "7.2",
         "recipe": {
@@ -332,6 +323,15 @@
             "package.json",
             "webpack.config.js"
         ]
+    },
+    "talleu/php-redis-om": {
+        "version": "0.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.3",
+            "ref": "7bb2ce82d2d034e3b8acc5592419450ddf4f9c05"
+        }
     },
     "twig/extra-bundle": {
         "version": "v3.20.0"
