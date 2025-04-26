@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('app', ['./assets/app.js'])
     .addEntry('allProductsPage',['./assets/styles/pages/_listProductsPage.scss'])
+    .addEntry('basketPage', ['./assets/styles/pages/_basketPage.scss'])
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

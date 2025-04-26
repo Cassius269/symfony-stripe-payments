@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Cart;
 use App\Service\CartService;
 use App\Service\StripeService;
 use App\Service\SessionService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Talleu\RedisOm\Om\RedisObjectManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Talleu\RedisOm\Client\PredisClient;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class OrderController extends AbstractController
 {
@@ -19,7 +19,8 @@ final class OrderController extends AbstractController
         private readonly SessionService $sessionService,
         private readonly StripeService $stripeService,
         private RedisObjectManagerInterface $redisObjectManager,
-        private readonly CartService $cartService
+        private readonly CartService $cartService,
+        private ParameterBagInterface $parameter
     ) {}
 
 
@@ -62,5 +63,44 @@ final class OrderController extends AbstractController
 
         // Renvoyer le lien de paiement Stripe au client en tant que réponse
         return $this->redirect($this->stripeService->getCartByUrl($cart));
+    }
+
+    #[Route(
+        path: '/basket',
+        name: 'basket'
+    )]
+    public function showCart(): Response
+    {
+        $client = RedisAdapter::createConnection($this->parameter->get('REDIS_URL'));
+        $client->set('cart_ID', 'je teste '); // envoyer une clé et sa valeur à Redis
+        // dd($client->get('cart_ID'));
+        // Récuperer le panier
+        $cart = $this->cartService->getCart();
+        // dd($cart);
+
+        // Récuperer les produits Stripe du panier et le dernier prix actif de chaque produit
+        $products = [];
+        foreach ($cart->products as $cartProduct) {
+            $product = $this->stripeService->findOneProduct($cartProduct->id);
+            $price = $this->stripeService->getLastActivePrice($product);
+
+            $products[] = [
+                'product' => $product,
+                'price' => $price,
+                'quantity' => $cartProduct->quantity
+            ]; // stocker chaque produit et son prix dans le tableau des produits se trouvant dans le panier
+        }
+
+        // Calculer la somme totale du panier
+        $total = 0;
+        foreach ($products as $item) {
+            $total += ($item['price']['unit_amount'] / 100) * $item['quantity'];
+        }
+        // dd($total);
+
+        return $this->render('product/basket.html.twig', [
+            'products' => $products,
+            'total' => $total
+        ]);
     }
 }

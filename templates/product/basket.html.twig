@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Le panier de produits
+{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('basketPage')}}
+{% endblock %}
+{% block body %}
+	<h1>Le panier</h1>
+	<section>
+		{# S'il y a un panier avec de(s) produit(s), l'afficher#}
+		{% set cartID = app.session.get('cardID') %}
+		{% if cartID %}
+			<table>
+				<caption>Les produits du panier</caption>
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Image</th>
+						<th>Prix</th>
+						<th>Quantité</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in products %}
+						<tr>
+							<td>{{item.product.name}}</td>
+							<td>
+								<img src="{{item.product.images[0]}}" alt="{{item.product.description}}" width="50px">
+							</td>
+							{# afficher le prix #}
+							<td>{{(item.price.unit_amount / 100)|number_format(2, ',', ' ') }}
+								{{ item.price.currency|upper }}</td>
+							<td>{{ item.quantity}}</td>
+							<td>
+								<a href="{{path("buy_product", {id: item.product.id })}}" title="acheter le produit">
+									<button>Acheter</button>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr>
+						<th colspan="2">Total</th>
+						{# Afficher le total #}
+						<th>{{ total|number_format(2, ',', ' ')}}</th>
+					</tr>
+				</tfoot>
+			</table>
+			<a href="{{path("buy_cart", {id:cartID})}}" title="lien vers le paiement" id="linkToCommand">
+				<button>Payer la commande</button>
+			</a>
+		{% else %}
+			<p>Le panier est vide</p>
+		{% endif %}
+
+
+	</section>
+{% endblock %}
